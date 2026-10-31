@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1c1d17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="新名古屋ポータル">
+<title>新名古屋ポータル（スマホ閲覧）</title>
+<style>
+:root{--bg:#1c1d17;--card:#26271f;--ink:#f3f2ea;--sub:#a9a89c;--y:#FEF200;--ng:#ff6b6b}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic UI",sans-serif}
+#ld{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
+.br{font-weight:800;letter-spacing:.06em;font-size:22px;color:var(--y)}.br small{display:block;color:var(--sub);font-size:12px;font-weight:600;letter-spacing:.1em}
+.cd{width:100%;max-width:420px;background:var(--card);border-radius:16px;padding:20px 18px;margin-top:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.cd h2{margin:0 0 6px;font-size:16px}.inf{color:var(--sub);font-size:13px;margin:0 0 14px}.inf b{color:var(--ink)}
+label.f{display:block;font-size:12px;color:var(--sub);margin:10px 0 4px}
+input[type=password],input[type=text]{width:100%;font:inherit;font-size:16px;padding:11px 12px;border-radius:10px;border:1px solid #55564c;background:#14150f;color:var(--ink)}
+.ck{display:flex;gap:8px;align-items:center;font-size:13px;margin:12px 0 4px;color:var(--sub)}.ck input{width:18px;height:18px}
+.go{display:block;text-align:center;cursor:pointer;width:100%;margin-top:14px;font:inherit;font-weight:800;font-size:16px;padding:12px;border:0;border-radius:12px;background:var(--y);color:#1c1d17}
+button.go:disabled{opacity:.5}
+.sec{width:100%;margin-top:10px;font:inherit;font-size:14px;padding:10px;border-radius:12px;border:1px solid #55564c;background:transparent;color:var(--ink);text-align:center;display:block}
+.msg{min-height:1.4em;font-size:13px;margin-top:10px;color:var(--sub)}.msg.ng{color:var(--ng)}
+.hint{color:var(--sub);font-size:12px;margin-top:16px;max-width:420px;text-align:left}
+#fr,#tov iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff}
+#nwbar{position:fixed;left:10px;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:9;display:none;align-items:center;gap:8px;background:#1c1d17;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+#nwbar span{flex:1}#nwbar button{border:0;border-radius:999px;font:inherit;font-weight:800;padding:6px 12px;background:#FEF200;color:#1c1d17}#nwbar #nwx{background:transparent;color:#fff;padding:6px}
+#tov{position:fixed;inset:0;background:#fff;z-index:5;display:none}
+#tov .bar{position:fixed;left:0;right:0;top:0;height:calc(44px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);background:var(--bg);color:var(--ink);display:flex;align-items:center;gap:10px;z-index:6}
+#tov .bar button{font:inherit;font-weight:700;border:0;background:var(--y);color:#1c1d17;border-radius:999px;padding:6px 14px;margin-left:10px}
+#tov .bar span{font-size:13px;color:var(--sub);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#tov iframe{top:calc(44px + env(safe-area-inset-top));height:calc(100% - 44px - env(safe-area-inset-top))}
+.hide{display:none!important}
+</style></head><body>
+<div id="ld">
+  <div class="br">SHIN NAGOYA<small>業務ポータル　スマホ閲覧（見るだけ）</small></div>
+  <div class="cd" id="c_open">
+    <h2>開く</h2>
+    <p class="inf" id="i_data">—</p>
+    <div id="pwbox"><label class="f" for="pw">パスワード</label><input type="password" id="pw" autocomplete="current-password" enterkeyhint="go">
+    <label class="ck"><input type="checkbox" id="rem" checked>このスマホでパスワードを覚える</label></div>
+    <button class="go" id="go">開く</button>
+    <div class="msg" id="msg"></div>
+    <label class="sec" id="l_file">別のファイル（新しい書き出し）を読み込む<input type="file" id="file" accept=".html,.htm,text/html" class="hide"></label>
+  </div>
+  <div class="cd hide" id="c_pick">
+    <h2>はじめに</h2>
+    <p class="inf">PCのポータルで「📱 スマホ用に書き出す」で作ったファイル（<b>新名古屋ポータル_スマホ用_〜.html</b>）を選んでください。メールで受け取った添付ファイルは、長押し →「"ファイル"に保存」してから選びます。</p>
+    <label class="go" style="display:block;text-align:center">ファイルを選ぶ<input type="file" id="file2" accept=".html,.htm,text/html" class="hide"></label>
+    <div class="msg" id="msg2"></div>
+  </div>
+  <p class="hint" id="hintp">・中身は書き出した時点の情報です（自動では新しくなりません）。<br>・見るだけです。保存・打刻・完了登録などはPCのポータルで。<br>・ホーム画面に追加すると、アプリのように開けます。</p>
+</div>
+<div id="tov"><div class="bar"><button type="button" id="tback">← 戻る</button><span id="tttl"></span></div><iframe id="tfr" title="タリフ"></iframe></div>
+<script type="application/json" id="snapmeta">__SNAPMETA__</script>
+<script type="application/octet-stream" id="snapdata">__SNAPDATA__</script>
+<script>
+(function(){
+  'use strict';
+  var $=function(i){return document.getElementById(i)};
+  var DBN='sna_snap';
+  function idb(){return new Promise(function(res,rej){var r=indexedDB.open(DBN,1);r.onupgradeneeded=function(){r.result.createObjectStore('kv')};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})}
+  function kv(k,v){return idb().then(function(db){return new Promise(function(res,rej){var t=db.transaction('kv',v===undefined?'readonly':'readwrite'),s=t.objectStore('kv');var q=v===undefined?s.get(k):(v===null?s.delete(k):s.put(v,k));q.onsuccess=function(){res(q.result)};q.onerror=function(){rej(q.error)}})})}
+  function kvs(k,v){return kv(k,v).catch(function(){return null})}
+  function msg(t,ng,id){var m=$(id||'msg');m.textContent=t||'';m.className='msg'+(ng?' ng':'')}
+  function fmt(iso){var d=new Date(iso);if(isNaN(d))return '—';var p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'/'+p(d.getMonth()+1)+'/'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())}
+  function b64(s){var b=atob(s),n=b.length,u=new Uint8Array(n);for(var i=0;i<n;i++)u[i]=b.charCodeAt(i);return u}
+  /* 書き出しファイル（HTML）から中身を取り出す */
+  function parse(html){var m=/<script type="application\/json" id="snapmeta">([\s\S]*?)<\/script>/.exec(html),d=/<script type="application\/octet-stream" id="snapdata">([\s\S]*?)<\/script>/.exec(html);
+    if(!m||!d||/^__SNAP/.test(m[1].trim()))return null;try{return {meta:JSON.parse(m[1]),data:d[1].trim()}}catch(e){return null}}
+  var CUR=null;   /* {meta,data} */
+  /* リンクで開いたとき（#<ID>.<SALT>）：中身は d/<ID>.json から読む。SALT はリンクにだけある */
+  var LINK=(function(){var m=/^#([a-z0-9]{8,32})\.([A-Za-z0-9_-]{16,})$/.exec(location.hash||'');return m?{id:m[1],salt:m[2]}:null})();
+  function b64u(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return b64(s)}
+  var KK=function(){return LINK?'lkey_'+LINK.id:'key'};
+  function inline(){var m=$('snapmeta').textContent.trim(),d=$('snapdata').textContent.trim();if(!m||/^__SNAP/.test(m))return null;try{return {meta:JSON.parse(m),data:d}}catch(e){return null}}
+  async function useKey(){var k=await kvs(KK());if(LINK)return k&&k.key?k.key:null;return k&&CUR&&k.salt===CUR.meta.salt?k.key:null}
+  function show(){var c=!!CUR;$('c_open').classList.toggle('hide',!c);$('c_pick').classList.toggle('hide',c);
+    if(c)$('i_data').innerHTML='<b>'+fmt(CUR.meta.at)+'</b> 時点の情報<br>（'+(CUR.meta.by||'—')+' さんが'+(LINK?'更新':'書き出し')+'・'+(Math.round(CUR.meta.size/1e5)/10)+' MB）'+(CUR.off?'<br>⚠ 電波が無いため、前に開いた情報です':'');
+    if(LINK)$('l_file').classList.add('hide')}
+  async function pick(f,mid){if(!f)return;msg('読み込んでいます…',false,mid);var t=await f.text();var o=parse(t);
+    if(!o){msg('このファイルはスマホ用の書き出しではありません（PCのポータルの「📱 スマホ用に書き出す」で作ったファイルを選んでください）',true,mid);return}
+    CUR=o;await kvs('file',o);msg('',false,mid);show();var k=await useKey();$('pwbox').classList.toggle('hide',!!k);if(k)open();else $('pw').focus()}
+  $('file').onchange=function(e){pick(e.target.files[0],'msg')};$('file2').onchange=function(e){pick(e.target.files[0],'msg2')};
+  $('pw').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();open()}});
+  $('go').onclick=function(){open()};
+  async function gunzip(u){var s=new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'));return await new Response(s).text()}
+  var busy=false;
+  async function open(){if(busy||!CUR)return;
+    if(!window.crypto||!crypto.subtle){msg('この開き方では暗号を解けません。会社の「スマホ閲覧」ページ（https）から開いてください',true);return}
+    if(typeof DecompressionStream!=='function'){msg('スマホのOS／ブラウザが古いため開けません（iPhone は iOS 16.4 以上、Android は Chrome を最新に）',true);return}
+    busy=true;$('go').disabled=true;msg('開いています…（数秒かかります）');
+    try{var M=CUR.meta,key=await useKey();
+      if(!key){var pw=$('pw').value;if(!pw){msg('パスワードを入れてください',true);return}
+        var base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+        key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:LINK?b64u(LINK.salt):b64(M.salt),iterations:M.it,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt'])}
+      var plain;try{plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(M.iv)},key,b64(CUR.data))}
+      catch(e){await kvs(KK(),null);$('pwbox').classList.remove('hide');msg('パスワードが違います',true);$('pw').select();return}
+      if($('rem').checked&&$('pw').value)await kvs(KK(),{salt:M.salt||'',key:key});
+      var P=JSON.parse(await gunzip(new Uint8Array(plain)));
+      if(CUR.s){var sp;try{sp=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(CUR.s.meta.iv)},key,b64(CUR.s.data))}catch(e){msg('本体を開けませんでした。もう一度開いてください',true);await kvs('ls_'+LINK.id,null);return}
+        var SP=JSON.parse(await gunzip(new Uint8Array(sp)));P.portal=SP.portal;if(SP.tariffs)P.tariffs=SP.tariffs;if(SP.guide!==undefined)P.guide=SP.guide}
+      launch(P)}
+    catch(e){msg('開けませんでした：'+(e&&e.message||e),true)}
+    finally{busy=false;$('go').disabled=false}}
+  /* ---- ポータルを「見るだけ」で動かす ---- */
+  var SHIM=function(){(function(){var P=parent;if(!P||!P.__SNAP)return;var S=P.__SNAP;
+    function NF(n){return new DOMException('見つかりません: '+n,'NotFoundError')}
+    function RO(){return new DOMException('スマホ閲覧は見るだけです（保存・変更はPCのポータルで）','NoModificationAllowedError')}
+    function it(a){var i=0;var o={next:async function(){return i<a.length?{value:a[i++],done:false}:{value:undefined,done:true}}};o[Symbol.asyncIterator]=function(){return o};return o}
+    function FH(n,t){return {kind:'file',name:n,getFile:async function(){return new File([t],n,{type:'application/json',lastModified:S.mt})},createWritable:async function(){throw RO()},isSameEntry:async function(o){return !!o&&o.name===n&&o.kind==='file'}}}
+    function DH(n){var d=new Map(),f=new Map();var h={kind:'directory',name:n,_d:d,_f:f,
+      getDirectoryHandle:async function(x,o){if(d.has(x))return d.get(x);if(f.has(x))throw new DOMException(x,'TypeMismatchError');if(o&&o.create)throw RO();throw NF(x)},
+      getFileHandle:async function(x,o){if(f.has(x))return FH(x,f.get(x));if(d.has(x))throw new DOMException(x,'TypeMismatchError');if(o&&o.create)throw RO();throw NF(x)},
+      removeEntry:async function(){throw RO()},
+      entries:function(){var a=[];d.forEach(function(v,k){a.push([k,v])});f.forEach(function(v,k){a.push([k,FH(k,v)])});return it(a)},
+      keys:function(){var a=[];d.forEach(function(v,k){a.push(k)});f.forEach(function(v,k){a.push(k)});return it(a)},
+      values:function(){var a=[];d.forEach(function(v){a.push(v)});f.forEach(function(v,k){a.push(FH(k,v))});return it(a)},
+      isSameEntry:async function(o){return o===h}};return h}
+    var root=DH(S.name||'snap');Object.keys(S.files).forEach(function(rel){var a=rel.split('/'),n=a.pop(),c=root;a.forEach(function(p){if(!c._d.has(p))c._d.set(p,DH(p));c=c._d.get(p)});c._f.set(n,S.files[rel])});
+    function add(files){Object.keys(files||{}).forEach(function(rel){var a=rel.split('/'),n=a.pop(),c=root;a.forEach(function(p){if(!c._d.has(p))c._d.set(p,DH(p));c=c._d.get(p)});c._f.set(n,files[rel])})}
+    window.SNA_SNAP={root:root,meta:S.meta,openTariff:function(f){P.__snapTariff(f)},reload:function(x){P.__snapReload(x)},has:function(f){return Object.prototype.hasOwnProperty.call(S.tariffs,f)},
+      addFiles:add,user:function(){return S.user||null},canLogin:function(){return !!(S.keyring&&S.keyring.users&&Object.keys(S.keyring.users).length)||!!S.full},full:function(){return !!S.full},
+      login:function(u,p,r){return P.__snapLogin(u,p,r)},logout:function(){return P.__snapLogout()}};
+    try{if(!localStorage.getItem('tariff_portal_user')&&S.meta.by)localStorage.setItem('tariff_portal_user',S.meta.by)}catch(e){}})()};
+  function launch(P){
+    if(LINK)CUR.meta.link=1;var F=P.files||{};if(P.guide)F['_home/guide.json']=P.guide;
+    /* 値段の分：v1（ファイル・前の形）と v3（リンク・前の形）は全部入り＝ログイン不要 */
+    var full=!!P.tariffs&&!P.keyring;
+    window.__SNAP={files:F,tariffs:P.tariffs||{},meta:CUR.meta,mt:new Date(CUR.meta.at).getTime()||Date.now(),name:'snap',keyring:P.keyring||null,priv:P.priv||null,full:full,user:full?{uid:'',name:'（ログイン不要の版）'}:null};
+    var h=String(P.portal||''),i=h.indexOf('<meta charset="utf-8">');if(i<0)i=h.indexOf('<head>')+6;else i+=22;
+    h=h.slice(0,i)+'<script>('+SHIM.toString()+')()<\/script>'+h.slice(i);
+    $('ld').classList.add('hide');var f=document.createElement('iframe');f.id='fr';f.title='ポータル';f.onload=function(){if(!full)autoLogin()};f.srcdoc=h;document.body.appendChild(f)}
+  /* ---- 個人ログイン（値段が分かるもの）---- */
+  function frameWin(){var f=$('fr');return f&&f.contentWindow}
+  function k2From(R,kek){return crypto.subtle.decrypt({name:'AES-GCM',iv:b64(R.iv)},kek,b64(R.wk))}
+  async function privLoad(k2raw){var S=window.__SNAP,K2=await crypto.subtle.importKey('raw',k2raw,'AES-GCM',false,['decrypt']);
+    var dec=async function(o){return JSON.parse(await gunzip(new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(o.meta?o.meta.iv:o.iv)},K2,b64(o.data)))))};
+    var T={},PF={};
+    if(S.priv){var x=await dec(S.priv);T=x.tariffs||{};PF=x.files||{}}
+    else if(LINK){var h=S.meta.h||{};
+      var t=await kvs('lt_'+LINK.id);if(!t||!t.meta||t.meta.h!==h.t){var r=await fetch('d/'+LINK.id+'.t.json?t='+Date.now(),{cache:'no-store'}).catch(function(){return null});if(r&&r.ok){t=await r.json();await kvs('lt_'+LINK.id,t)}}
+      var p=null,r2=await fetch('d/'+LINK.id+'.p.json?t='+Date.now(),{cache:'no-store'}).catch(function(){return null});if(r2&&r2.ok){p=await r2.json();await kvs('lp_'+LINK.id,p)}else p=await kvs('lp_'+LINK.id);
+      if(!t||!p)throw new Error('値段の分を読み込めませんでした（電波を確認してください）');T=(await dec(t)).tariffs||{};PF=(await dec(p)).files||{}}
+    S.tariffs=T;var w=frameWin();if(w&&w.SNA_SNAP)w.SNA_SNAP.addFiles(PF);return true}
+  window.__snapLogin=async function(uid,pw,rem){var S=window.__SNAP;uid=String(uid||'').trim().toLowerCase();var R=S.keyring&&S.keyring.users&&S.keyring.users[uid];
+    if(!R||!pw)throw new Error('ID かパスワードが違います');
+    var base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveBits']);
+    var bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:b64u(R.s),iterations:S.meta.it||310000,hash:'SHA-256'},base,256);
+    var kek=await crypto.subtle.importKey('raw',bits,'AES-GCM',false,['decrypt']);var k2;
+    try{k2=await k2From(R,kek)}catch(e){throw new Error('ID かパスワードが違います')}
+    await privLoad(k2);S.user={uid:uid,name:R.n||uid};if(rem)await kvs('login',{uid:uid,kek:kek});fire();return S.user};
+  async function autoLogin(){var S=window.__SNAP,L=await kvs('login');if(!L||!S.keyring)return;var R=S.keyring.users&&S.keyring.users[L.uid];
+    if(!R){await kvs('login',null);return}try{var k2=await k2From(R,L.kek);await privLoad(k2);S.user={uid:L.uid,name:R.n||L.uid};fire()}catch(e){await kvs('login',null)}}
+  window.__snapLogout=async function(){await kvs('login',null);location.reload()};
+  function fire(){var w=frameWin();try{w.dispatchEvent(new w.CustomEvent('sna-login'))}catch(e){}}
+  window.__snapTariff=function(file){var S=window.__SNAP,t=S&&S.tariffs[file];
+    if(t==null){alert(S.user||S.full?'このタリフは入っていません（'+file+'）':'タリフを見るにはログインが必要です（右上の 🔑）');return}
+    $('tttl').textContent=file.replace(/_タリフ検索\.html$/,'').replace(/\.html$/,'')+' タリフ';var inj='<script>('+SHIM.toString()+')();document.addEventListener("click",function(e){if(e.target.closest("a.snbrand,a.homelink")){e.preventDefault();e.stopPropagation();parent.__snapTariffClose()}},true);document.addEventListener(\"DOMContentLoaded\",function(){setTimeout(function(){var t=document.querySelector(\".tab[data-tab=t1]\");if(t&&!t.classList.contains(\"on\"))t.click()},60)})<\/script><style>#shpill{display:none!important}</style>';var i=t.indexOf('<head>');t=i<0?inj+t:t.slice(0,i+6)+inj+t.slice(i+6);$('tfr').srcdoc=t;$('tov').style.display='block'};
+  window.__snapTariffClose=function(){$('tov').style.display='none';$('tfr').srcdoc='<html></html>'};
+  $('tback').onclick=function(){window.__snapTariffClose()};
+  window.__snapReload=function(pick){try{if(pick)sessionStorage.setItem('snap_noauto','1')}catch(e){}location.reload()};
+  async function linkLoad(){$('hintp').innerHTML='・情報は毎日 朝・昼・夕に新しくなります（開くたびに最新を読みます）。<br>・見るだけです。保存・打刻・完了登録などはPCのポータルで。<br>・ホーム画面に追加すると、アプリのように開けます。<br>・リンクとパスワードは毎月はじめに変わります。';$('c_pick').classList.add('hide');$('c_open').classList.remove('hide');$('i_data').textContent='最新の情報を読み込んでいます…';$('l_file').classList.add('hide');
+    var r=null;try{r=await fetch('d/'+LINK.id+'.d.json?t='+Date.now(),{cache:'no-store'})}catch(e){r=null}
+    if(r&&r.status===404){await kvs('lfile_'+LINK.id,null);await kvs(KK(),null);CUR=null;$('pwbox').classList.add('hide');$('go').classList.add('hide');
+      $('i_data').innerHTML='<b>このリンクは使えなくなりました。</b><br>リンクとパスワードは毎月はじめに変わります。新しいリンクを受け取ってください。';return false}
+    if(r&&r.ok){try{CUR=await r.json();await kvs('lfile_'+LINK.id,CUR)}catch(e){CUR=null}}
+    if(!CUR){CUR=(await kvs('lfile_'+LINK.id))||null;if(CUR)CUR.off=1}
+    if(!CUR){$('i_data').textContent='読み込めませんでした。電波のある所でもう一度開いてください';return false}
+    /* 本体＋タリフ（変わったときだけ読み直す） */
+    var sh=CUR.meta.h?CUR.meta.h.s:CUR.meta.sh,S=await kvs('ls_'+LINK.id);var sOf=function(x){return x&&x.meta&&(x.meta.h||x.meta.sh)};
+    if(!S||sOf(S)!==sh){$('i_data').textContent='本体とタリフを読み込んでいます…（変わったときだけ）';var r2=null;try{r2=await fetch('d/'+LINK.id+'.s.json?t='+Date.now(),{cache:'no-store'})}catch(e){}
+      if(r2&&r2.ok){try{S=await r2.json();await kvs('ls_'+LINK.id,S)}catch(e){S=null}}}
+    if(!S||sOf(S)!==sh){if(!S){$('i_data').textContent='読み込めませんでした。電波のある所でもう一度開いてください';return false}}
+    CUR.s=S;return true}
+  /* 開いている間：5 分ごと・画面に戻ったときに、新しい情報があるか見る（小さいファイルだけ） */
+  var CHK=0;async function linkCheck(){if(!LINK||!CUR||Date.now()-CHK<60e3)return;CHK=Date.now();
+    try{var r=await fetch('d/'+LINK.id+'.m.json?t='+Date.now(),{cache:'no-store'});if(r.status===404){showNew('このリンクは使えなくなりました（今月の新しいリンクを受け取ってください）',false);return}
+      var m=await r.json();if(m&&m.at&&m.at>CUR.meta.at)showNew('新しい情報があります（'+fmt(m.at).slice(5)+' 時点）',true)}catch(e){}}
+  function showNew(t,btn){var b=$('nwbar');if(!b){b=document.createElement('div');b.id='nwbar';document.body.appendChild(b)}
+    b.innerHTML='<span>'+t+'</span>'+(btn?'<button type="button" id="nwgo">更新</button>':'')+'<button type="button" id="nwx">✕</button>';b.style.display='flex';
+    if(btn)$('nwgo').onclick=function(){location.reload()};$('nwx').onclick=function(){b.style.display='none'}}
+  if(LINK){setInterval(linkCheck,5*60e3);document.addEventListener('visibilitychange',function(){if(!document.hidden)linkCheck()})}
+  (async function(){if(LINK){if(await linkLoad()){show();var k0=await useKey();$('pwbox').classList.toggle('hide',!!k0);if(k0)open();else $('pw').focus()}return}
+    var o=inline();if(o){CUR=o}else{CUR=(await kvs('file'))||null}
+    show();if(!CUR)return;var no=false;try{no=sessionStorage.getItem('snap_noauto')==='1';sessionStorage.removeItem('snap_noauto')}catch(e){}
+    var k=await useKey();$('pwbox').classList.toggle('hide',!!k);if(k&&!no)open();})();
+})();
+</script>
+</body></html>
